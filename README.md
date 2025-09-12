@@ -1,4 +1,4 @@
-````markdown
+
 # 🌧️ Rooftop Rainwater Harvesting & Artificial Recharge Assessment App
 
 ## 📌 Overview
@@ -115,5 +115,3 @@ Feel free to use and modify for educational and community purposes.
 
 ---
 
-```
-```
