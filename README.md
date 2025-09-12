@@ -102,9 +102,9 @@ npm start
 
 ## 👥 Contributors
 
-* [Your Name](https://github.com/your-username) – Full Stack Development
-* \[Teammate Name] – UI/UX Design
-* \[Teammate Name] – Data & GIS Integration
+* [Swarup Chanda](https://github.com/swarupecenits) – Full Stack Development
+<!-- * \[Teammate Name] – UI/UX Design
+* \[Teammate Name] – Data & GIS Integration -->
 
 ---
 
