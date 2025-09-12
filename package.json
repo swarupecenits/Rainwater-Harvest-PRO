@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "dot-env": "^0.0.1",
-    "openmeteo": "^1.2.0"
-  }
-}
