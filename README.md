@@ -103,8 +103,9 @@ npm start
 ## 👥 Contributors
 
 * [Swarup Chanda](https://github.com/swarupecenits) – Full Stack Development
-<!-- * \[Teammate Name] – UI/UX Design
-* \[Teammate Name] – Data & GIS Integration -->
+* \[Garvit Khare] – Data Analysis
+* \[Kunal Hazarika] – Software Tester
+* \[Pragyan] – Backened Data & GIS Integration
 
 ---
 
