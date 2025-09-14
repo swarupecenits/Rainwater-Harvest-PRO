@@ -16,7 +16,7 @@ const Login: React.FC = () => {
           <div className="flex items-center justify-center mb-8">
             <DropletIcon className="h-10 w-10 text-blue-600 mr-2" />
             <h1 className="text-2xl font-bold text-gray-800">
-              RainHarvest Pro
+              RainWise
             </h1>
           </div>
           <div className="bg-white rounded-xl shadow-sm p-8">
