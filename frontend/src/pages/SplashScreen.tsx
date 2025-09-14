@@ -14,10 +14,10 @@ const SplashScreen: React.FC = () => {
         <DropletIcon className="h-24 w-24 mb-4" />
       </div>
       <h1 className="text-4xl font-bold mb-2 animate-fade-in">
-        RainHarvest Pro
+        RainWise
       </h1>
       <p className="text-lg opacity-90 text-center">
-        Sustainable water solutions at your fingertips
+        Smart way to manage rainwater.
       </p>
       <div className="mt-12 flex justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>

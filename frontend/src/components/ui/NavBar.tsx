@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { HomeIcon, DropletIcon, MapIcon, FileTextIcon, BookOpenIcon, SettingsIcon, MenuIcon, XIcon } from 'lucide-react';
 interface NavItem {
@@ -7,6 +7,15 @@ interface NavItem {
   label: string;
 }
 const NavBar: React.FC = () => {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.noupe.com/embed/01994897f9a47f4fb4ebdb73296a5bebd1b5.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navItems: NavItem[] = [{
@@ -42,7 +51,7 @@ const NavBar: React.FC = () => {
           <Link to="/dashboard" className="flex items-center">
             <DropletIcon className="h-6 w-6 text-blue-600" />
             <span className="ml-2 font-semibold text-lg text-gray-800">
-              RainHarvest Pro
+              RainWise
             </span>
           </Link>
           <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-gray-500 focus:outline-none">
@@ -62,7 +71,7 @@ const NavBar: React.FC = () => {
           <Link to="/dashboard" className="flex items-center">
             <DropletIcon className="h-6 w-6 text-blue-600" />
             <span className="ml-2 font-semibold text-lg text-gray-800">
-              RainHarvest Pro
+              RainWise
             </span>
           </Link>
         </div>
