@@ -252,7 +252,7 @@ const Dashboard: React.FC = () => {
               </div>
               <div className="mt-2 text-xs text-gray-500">Time: {weather.time}</div>
             </div>
-          )}
+          )}  
       </Card>
     </div>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
