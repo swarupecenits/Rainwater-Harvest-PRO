@@ -142,29 +142,31 @@ const Dashboard: React.FC = () => {
       </p>
     </div>
     {/* Weather Search Section */}
-    <div className="mb-8">
-      <h2 className="text-xl font-semibold mb-4">Current Weather</h2>
-      <Card className="p-6">
-        <form onSubmit={fetchWeatherByCity} className="flex gap-2 mb-4">
-          <input
-            type="text"
-            value={city}
-            onChange={e => setCity(e.target.value)}
-            placeholder="Enter city name..."
-            className="border rounded px-3 py-2 flex-1"
-          />
-          <Button type="submit" variant="primary">Search</Button>
-          <Button type="button" variant="outline" onClick={fetchWeatherByLocation}>Use My Location</Button>
-        </form>
-        {weatherLoading && <div className="text-blue-600">Loading weather...</div>}
-        {weatherError && <div className="text-red-600">{weatherError}</div>}
-          {weather && weather.hourly && (
-            <div className="mt-4">
-              <div className="mb-2">
-                <h3 className="text-lg font-semibold">{weather.city}</h3>
-                <div className="text-gray-600">Lat: {weather.lat}, Lon: {weather.lon}</div>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4">Current Weather</h2>
+        <Card className="p-4 sm:p-6">
+          <form onSubmit={fetchWeatherByCity} className="flex flex-col sm:flex-row gap-2 mb-4">
+            <input
+              type="text"
+              value={city}
+              onChange={e => setCity(e.target.value)}
+              placeholder="Enter city name..."
+              className="border rounded px-3 py-2 flex-1 min-w-0"
+            />
+            <div className="flex gap-2">
+              <Button type="submit" variant="primary" className="w-full sm:w-auto">Search</Button>
+              <Button type="button" variant="outline" onClick={fetchWeatherByLocation} className="w-full sm:w-auto">Use My Location</Button>
+            </div>
+          </form>
+          {weatherLoading && <div className="text-blue-600">Loading weather...</div>}
+          {weatherError && <div className="text-red-600">{weatherError}</div>}
+            {weather && weather.hourly && (
+              <div className="mt-4">
+                <div className="mb-2">
+                  <h3 className="text-lg font-semibold">{weather.city}</h3>
+                  <div className="text-gray-600">Lat: {weather.lat}, Lon: {weather.lon}</div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {/* Temperature (2 m) */}
                 <div><div className="text-sm text-gray-500">Temperature (2 m)</div><div className="text-xl font-bold">{weather.hourly.temperature_2m?.[0]}°C</div></div>
                 {/* Relative Humidity (2 m) */}
@@ -325,9 +327,6 @@ const Dashboard: React.FC = () => {
             <div className="mt-4 text-sm text-gray-600">
               Complete an assessment to get personalized savings estimates.
             </div>
-            <Button variant="outline" className="mt-4" onClick={() => navigate('/assessment')}>
-              Start Assessment
-            </Button>
           </div>
         </Card>
       </div>

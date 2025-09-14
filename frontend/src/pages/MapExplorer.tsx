@@ -32,7 +32,7 @@ const MapExplorer: React.FC = () => {
     <MainLayout>
       <div className="mb-6 flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">GIS Map Explorer</h1>
+          <h1 className="text-2xl font-bold text-gray-800">RainWise Map Explorer</h1>
           <p className="text-gray-600">
             Explore rainwater harvesting data in your area
           </p>
@@ -62,24 +62,24 @@ const MapExplorer: React.FC = () => {
               <Popup>{result.display_name}</Popup>
             </Marker>
           ))}
-          {/* Overlay controls as last child for stacking */}
-          <div className="absolute top-0 left-0 w-full z-[1000] flex justify-between p-4 pointer-events-auto">
+          {/* Responsive controls at bottom for mobile */}
+          <div className="absolute bottom-0 left-0 w-full z-[1000] flex flex-col sm:flex-row sm:justify-between gap-2 p-4 pointer-events-auto">
             <form
               onSubmit={handleSearch}
-              className="w-80 bg-white rounded-lg shadow-md p-2 flex items-center"
+              className="flex-1 bg-white rounded-lg shadow-md p-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2"
             >
               <input
                 type="text"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Search for a place..."
-                className="flex-1 py-2 px-2 text-sm focus:outline-none"
+                className="flex-1 py-2 px-2 text-sm focus:outline-none rounded"
               />
-              <button type="submit" className="ml-2 px-3 py-1 bg-blue-600 text-white rounded">Search</button>
+              <button type="submit" className="w-full sm:w-auto px-3 py-2 bg-blue-600 text-white rounded">Search</button>
             </form>
             <button
               onClick={handleZoomToUser}
-              className="px-3 py-1 bg-green-600 text-white rounded shadow"
+              className="w-full sm:w-auto px-3 py-2 bg-green-600 text-white rounded shadow"
             >
               Zoom to My Location
             </button>

@@ -9,7 +9,7 @@ interface NavItem {
 const NavBar: React.FC = () => {
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = 'https://www.noupe.com/embed/01994897f9a47f4fb4ebdb73296a5bebd1b5.js';
+    script.src = 'https://www.noupe.com/embed/019948a5225c709ba57d3c33d93feda0228c.js';
     script.async = true;
     document.body.appendChild(script);
     return () => {

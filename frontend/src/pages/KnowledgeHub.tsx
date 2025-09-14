@@ -11,6 +11,7 @@ interface ContentItem {
   thumbnail: string;
   duration?: string;
   featured?: boolean;
+  link?: string;
 }
 const KnowledgeHub: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -39,39 +40,45 @@ const KnowledgeHub: React.FC = () => {
     type: 'article',
     category: 'basics',
     thumbnail: 'https://images.unsplash.com/photo-1525939864518-b53937989bbd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFpbndhdGVyfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
-    featured: true
+    featured: true,
+    link: 'https://savetherivers.in/rainwater-harvesting/'
   }, {
     id: '2',
     title: 'How to Build a Recharge Pit',
     type: 'video',
     category: 'techniques',
     thumbnail: 'https://images.unsplash.com/photo-1594642441838-7d17b2e0e103?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZGlnZ2luZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
-    duration: '12:45'
+    duration: '12:45',
+    link: 'https://m.youtube.com/watch?v=FAKCczVl5ls'
   }, {
     id: '3',
     title: 'Maintenance Guide for Storage Tanks',
     type: 'guide',
     category: 'maintenance',
-    thumbnail: 'https://images.unsplash.com/photo-1607175589090-c188838b9d35?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2F0ZXIlMjB0YW5rfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60'
+    thumbnail: 'https://images.unsplash.com/photo-1607175589090-c188838b9d35?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2F0ZXIlMjB0YW5rfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
+    link: 'https://www.petrosync.com/blog/storage-tank-maintenance/'
   }, {
     id: '4',
     title: 'Economic Benefits of Rainwater Harvesting',
     type: 'article',
     category: 'benefits',
-    thumbnail: 'https://images.unsplash.com/photo-1580519542036-c47de6196ba5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2hhcnR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60'
+    thumbnail: 'https://images.unsplash.com/photo-1580519542036-c47de6196ba5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2hhcnR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
+    link: 'https://nexteel.in/the-economics-behind-rainwater-harvesting-how-worthwhile-is-the-investment/'
   }, {
     id: '5',
     title: 'Success Story: Community Harvesting Project',
     type: 'article',
     category: 'case-studies',
-    thumbnail: 'https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y29tbXVuaXR5fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60'
+    thumbnail: 'https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y29tbXVuaXR5fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
+    link: 'https://neer.co.in/rainwater-harvesting-success-stories-from-around-the-globe/'
   }, {
     id: '6',
     title: 'DIY Filtration Systems',
     type: 'video',
     category: 'techniques',
     thumbnail: 'https://images.unsplash.com/photo-1527061011665-3652c757a4d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmlsdGVyfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
-    duration: '08:32'
+    duration: '08:32',
+    link: 'https://youtu.be/JPZHTBHOUz4?si=kCeIJtk8YDwfiefu'
   }];
   const filteredContent = activeCategory === 'all' ? content : content.filter(item => item.category === activeCategory);
   const getTypeIcon = (type: ContentItem['type']) => {
@@ -135,37 +142,81 @@ const KnowledgeHub: React.FC = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredContent.map(item => <Card key={item.id} className="overflow-hidden hover:shadow-md transition-all cursor-pointer">
-            <div className="relative h-40">
-              <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
-              {item.type === 'video' && <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="bg-black bg-opacity-50 rounded-full p-3">
-                    <PlayIcon className="h-6 w-6 text-white" />
+        {filteredContent.map(item => (
+          item.link ? (
+            <a
+              key={item.id}
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: 'none' }}
+            >
+              <Card className="overflow-hidden hover:shadow-md transition-all cursor-pointer">
+                <div className="relative h-40">
+                  <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
+                  {item.type === 'video' && <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="bg-black bg-opacity-50 rounded-full p-3">
+                        <PlayIcon className="h-6 w-6 text-white" />
+                      </div>
+                    </div>}
+                  {item.featured && <div className="absolute top-2 right-2 bg-yellow-500 text-xs text-white px-2 py-1 rounded">
+                      Featured
+                    </div>}
+                </div>
+                <div className="p-4">
+                  <div className="flex items-center text-xs text-gray-500 mb-2">
+                    <span className="flex items-center">
+                      {getTypeIcon(item.type)}
+                      <span className="ml-1 capitalize">{item.type}</span>
+                    </span>
+                    {item.duration && <span className="ml-2 flex items-center">
+                        • {item.duration}
+                      </span>}
                   </div>
-                </div>}
-              {item.featured && <div className="absolute top-2 right-2 bg-yellow-500 text-xs text-white px-2 py-1 rounded">
-                  Featured
-                </div>}
-            </div>
-            <div className="p-4">
-              <div className="flex items-center text-xs text-gray-500 mb-2">
-                <span className="flex items-center">
-                  {getTypeIcon(item.type)}
-                  <span className="ml-1 capitalize">{item.type}</span>
-                </span>
-                {item.duration && <span className="ml-2 flex items-center">
-                    • {item.duration}
-                  </span>}
+                  <h3 className="font-semibold mb-2">{item.title}</h3>
+                  <div className="flex items-center">
+                    <TagIcon className="h-3 w-3 text-gray-400 mr-1" />
+                    <span className="text-xs text-gray-500 capitalize">
+                      {categories.find(c => c.id === item.category)?.name}
+                    </span>
+                  </div>
+                </div>
+              </Card>
+            </a>
+          ) : (
+            <Card key={item.id} className="overflow-hidden hover:shadow-md transition-all cursor-pointer">
+              <div className="relative h-40">
+                <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
+                {item.type === 'video' && <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="bg-black bg-opacity-50 rounded-full p-3">
+                      <PlayIcon className="h-6 w-6 text-white" />
+                    </div>
+                  </div>}
+                {item.featured && <div className="absolute top-2 right-2 bg-yellow-500 text-xs text-white px-2 py-1 rounded">
+                    Featured
+                  </div>}
               </div>
-              <h3 className="font-semibold mb-2">{item.title}</h3>
-              <div className="flex items-center">
-                <TagIcon className="h-3 w-3 text-gray-400 mr-1" />
-                <span className="text-xs text-gray-500 capitalize">
-                  {categories.find(c => c.id === item.category)?.name}
-                </span>
+              <div className="p-4">
+                <div className="flex items-center text-xs text-gray-500 mb-2">
+                  <span className="flex items-center">
+                    {getTypeIcon(item.type)}
+                    <span className="ml-1 capitalize">{item.type}</span>
+                  </span>
+                  {item.duration && <span className="ml-2 flex items-center">
+                      • {item.duration}
+                    </span>}
+                </div>
+                <h3 className="font-semibold mb-2">{item.title}</h3>
+                <div className="flex items-center">
+                  <TagIcon className="h-3 w-3 text-gray-400 mr-1" />
+                  <span className="text-xs text-gray-500 capitalize">
+                    {categories.find(c => c.id === item.category)?.name}
+                  </span>
+                </div>
               </div>
-            </div>
-          </Card>)}
+            </Card>
+          )
+        ))}
       </div>
     </MainLayout>;
 };
