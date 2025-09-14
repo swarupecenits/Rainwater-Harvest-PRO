@@ -63,7 +63,7 @@ const MapExplorer: React.FC = () => {
             </Marker>
           ))}
           {/* Responsive controls at bottom for mobile */}
-          <div className="absolute bottom-0 left-0 w-full z-[1000] flex flex-col sm:flex-row sm:justify-between gap-2 p-4 pointer-events-auto">
+          <div className="absolute bottom-0 left-0 w-full z-[1200] flex flex-col sm:flex-row sm:justify-between gap-2 p-4 pointer-events-auto">
             <form
               onSubmit={handleSearch}
               className="flex-1 bg-white rounded-lg shadow-md p-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2"

@@ -46,7 +46,7 @@ const NavBar: React.FC = () => {
   const isActive = (path: string) => location.pathname === path;
   return <>
       {/* Mobile Navigation */}
-      <div className="md:hidden fixed top-0 left-0 right-0 bg-white shadow-sm z-10">
+  <div className="md:hidden fixed top-0 left-0 right-0 bg-white shadow-sm z-[1100]">
         <div className="flex items-center justify-between p-4">
           <Link to="/dashboard" className="flex items-center">
             <DropletIcon className="h-6 w-6 text-blue-600" />
@@ -66,7 +66,7 @@ const NavBar: React.FC = () => {
           </div>}
       </div>
       {/* Desktop Navigation */}
-      <div className="hidden md:flex md:flex-col md:fixed md:inset-y-0 md:bg-white md:border-r md:border-gray-200 md:w-64 md:shadow-sm">
+  <div className="hidden md:flex md:flex-col md:fixed md:inset-y-0 md:bg-white md:border-r md:border-gray-200 md:w-64 md:shadow-sm z-[1100]">
         <div className="flex items-center h-16 px-6 border-b border-gray-200">
           <Link to="/dashboard" className="flex items-center">
             <DropletIcon className="h-6 w-6 text-blue-600" />
