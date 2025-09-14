@@ -4,7 +4,22 @@ import MainLayout from '../layouts/MainLayout';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
+import { useTranslation } from "react-i18next";
+
+const lngs = [
+  { code: "en", native: "English (US)" },
+  { code: "hi", native: "Hindi (हिन्दी)" },
+];
+
 const Settings: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const [selectedLang, setSelectedLang] = useState<string>(i18n.language || "en");
+
+  const handleSave = () => {
+    i18n.changeLanguage(selectedLang);
+    localStorage.setItem("preferredLanguage", selectedLang);
+  };
+
   const [activeTab, setActiveTab] = useState('profile');
   const tabs = [{
     id: 'profile',
@@ -48,7 +63,7 @@ const Settings: React.FC = () => {
       <div className="flex-1">
         {activeTab === 'profile' && <Card className="p-6">
           <h2 className="text-xl font-semibold mb-6">
-            Profile Information
+            {t("Profile Information")}
           </h2>
           <div className="flex items-center mb-6">
             <div className="mr-4">
@@ -58,7 +73,7 @@ const Settings: React.FC = () => {
             </div>
             <div>
               <Button variant="outline" size="sm">
-                Change Photo
+                {t("Change Photo")}
               </Button>
               <p className="text-xs text-gray-500 mt-1">
                 JPG, GIF or PNG. Max size 1MB.
@@ -72,7 +87,7 @@ const Settings: React.FC = () => {
             <Input label="Phone Number" type="tel" value="+91 600 314 7277" />
           </div>
           <div className="mt-6">
-            <h3 className="font-medium mb-4">Default Address</h3>
+            <h3 className="font-medium mb-4">{t("Default Address")}</h3>
             <Input label="Street Address" value="NIT Silchar" />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Input label="City" value="Silchar" />
@@ -81,19 +96,19 @@ const Settings: React.FC = () => {
             </div>
           </div>
           <div className="mt-6 flex justify-end">
-            <Button variant="primary">Save Changes</Button>
+            <Button variant="primary">{t("Save Changes")}</Button>
           </div>
         </Card>}
         {activeTab === 'notifications' && <Card className="p-6">
           <h2 className="text-xl font-semibold mb-6">
-            Notification Preferences
+            {t("Notification Preferences")}
           </h2>
           <div className="space-y-4">
             <div className="flex items-center justify-between py-2 border-b border-gray-100">
               <div>
-                <h3 className="font-medium">Assessment Reports</h3>
+                <h3 className="font-medium">{t("Assessment Reports")}</h3>
                 <p className="text-sm text-gray-600">
-                  Receive notifications when your assessments are complete
+                  {t("Receive notifications when your assessments are complete")}
                 </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
@@ -103,10 +118,9 @@ const Settings: React.FC = () => {
             </div>
             <div className="flex items-center justify-between py-2 border-b border-gray-100">
               <div>
-                <h3 className="font-medium">Rainfall Alerts</h3>
+                <h3 className="font-medium">{t("Rainfall Alerts")}</h3>
                 <p className="text-sm text-gray-600">
-                  Get notified about significant rainfall events in your
-                  area
+                  {t("Get notified about significant rainfall events in your area")}
                 </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
@@ -116,9 +130,9 @@ const Settings: React.FC = () => {
             </div>
             <div className="flex items-center justify-between py-2 border-b border-gray-100">
               <div>
-                <h3 className="font-medium">News & Updates</h3>
+                <h3 className="font-medium">{t("News & Updates")}</h3>
                 <p className="text-sm text-gray-600">
-                  Stay informed about new features and app updates
+                  {t("Stay informed about new features and app updates")}
                 </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
@@ -128,10 +142,9 @@ const Settings: React.FC = () => {
             </div>
             <div className="flex items-center justify-between py-2 border-b border-gray-100">
               <div>
-                <h3 className="font-medium">Maintenance Reminders</h3>
+                <h3 className="font-medium">{t("Maintenance Reminders")}</h3>
                 <p className="text-sm text-gray-600">
-                  Get reminders for maintaining your rainwater harvesting
-                  systems
+                  {t("Get reminders for maintaining your rainwater harvesting systems")}
                 </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
@@ -141,45 +154,45 @@ const Settings: React.FC = () => {
             </div>
           </div>
           <div className="mt-6">
-            <h3 className="font-medium mb-4">Notification Channels</h3>
+            <h3 className="font-medium mb-4">{t("Notification Channels")}</h3>
             <div className="space-y-3">
               <div className="flex items-center">
                 <input id="email-notifications" type="checkbox" className="h-4 w-4 text-blue-600 rounded border-gray-300" defaultChecked />
                 <label htmlFor="email-notifications" className="ml-2 block text-sm text-gray-700">
-                  Email
+                  {t("Email")}
                 </label>
               </div>
               <div className="flex items-center">
                 <input id="sms-notifications" type="checkbox" className="h-4 w-4 text-blue-600 rounded border-gray-300" />
                 <label htmlFor="sms-notifications" className="ml-2 block text-sm text-gray-700">
-                  SMS
+                  {t("SMS")}
                 </label>
               </div>
               <div className="flex items-center">
                 <input id="push-notifications" type="checkbox" className="h-4 w-4 text-blue-600 rounded border-gray-300" defaultChecked />
                 <label htmlFor="push-notifications" className="ml-2 block text-sm text-gray-700">
-                  Push Notifications
+                 {t("Push Notifications")} 
                 </label>
               </div>
             </div>
           </div>
           <div className="mt-6 flex justify-end">
-            <Button variant="primary">Save Preferences</Button>
+            <Button variant="primary">{t("Save Preferences")}</Button>
           </div>
         </Card>}
         {activeTab === 'appearance' && <Card className="p-6">
           <h2 className="text-xl font-semibold mb-6">
-            Appearance Settings
+            {t("Appearance Settings")}
           </h2>
           <div className="mb-6">
-            <h3 className="font-medium mb-4">Theme</h3>
+            <h3 className="font-medium mb-4">{t("Theme")}</h3>
             <div className="grid grid-cols-3 gap-4">
               <div className="border border-blue-600 rounded-lg p-3 cursor-pointer">
                 <div className="h-20 bg-white rounded mb-2"></div>
                 <div className="flex items-center">
                   <input id="light-theme" type="radio" name="theme" className="h-4 w-4 text-blue-600" defaultChecked />
                   <label htmlFor="light-theme" className="ml-2 block text-sm">
-                    Light
+                    {t("Light")}
                   </label>
                 </div>
               </div>
@@ -188,7 +201,7 @@ const Settings: React.FC = () => {
                 <div className="flex items-center">
                   <input id="dark-theme" type="radio" name="theme" className="h-4 w-4 text-blue-600" />
                   <label htmlFor="dark-theme" className="ml-2 block text-sm">
-                    Dark
+                   {t("Dark")} 
                   </label>
                 </div>
               </div>
@@ -197,14 +210,14 @@ const Settings: React.FC = () => {
                 <div className="flex items-center">
                   <input id="system-theme" type="radio" name="theme" className="h-4 w-4 text-blue-600" />
                   <label htmlFor="system-theme" className="ml-2 block text-sm">
-                    System
+                    {t("System")}
                   </label>
                 </div>
               </div>
             </div>
           </div>
           <div className="mb-6">
-            <h3 className="font-medium mb-4">Text Size</h3>
+            <h3 className="font-medium mb-4">{t("Text Size")}</h3>
             <div className="flex items-center">
               <span className="text-sm mr-3">A</span>
               <input type="range" min="1" max="5" step="1" defaultValue="3" className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
@@ -212,22 +225,26 @@ const Settings: React.FC = () => {
             </div>
           </div>
           <div className="mt-6 flex justify-end">
-            <Button variant="primary">Apply Changes</Button>
+            <Button variant="primary">{t("Apply Changes")}</Button>
           </div>
         </Card>}
         {activeTab === 'language' && <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-6">Language Settings</h2>
+          <h2 className="text-xl font-semibold mb-6">{t("Language Settings")}</h2>
           <div className="mb-6">
-            <h3 className="font-medium mb-4">App Language</h3>
-            <select className="w-full border border-gray-300 rounded-lg py-2 px-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="en">English (US)</option>
-              <option value="hi">Hindi (हिन्दी)</option>
-              <option value="bn">Bengali (বাংলা)</option>
-
+            <h3 className="font-medium mb-4">{t("App Language")}</h3>
+            <select className="w-full border border-gray-300 rounded-lg py-2 px-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={selectedLang}
+              onChange={(e) => setSelectedLang(e.target.value)}
+            >
+              {lngs.map((lng) => (
+                <option key={lng.code} value={lng.code}>
+                  {lng.native}
+                </option>
+              ))}
             </select>
           </div>
           <div className="mb-6">
-            <h3 className="font-medium mb-4">Region</h3>
+            <h3 className="font-medium mb-4">{t("Region")}</h3>
             <select className="w-full border border-gray-300 rounded-lg py-2 px-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
               <option value="us">United States</option>
               <option value="eu">European Union</option>
@@ -278,7 +295,7 @@ const Settings: React.FC = () => {
             </div>
           </div>
           <div className="mt-6 flex justify-end">
-            <Button variant="primary">Save Preferences</Button>
+            <Button onClick={handleSave} variant="primary">{t("Save Preferences")}</Button>
           </div>
         </Card>}
       </div>

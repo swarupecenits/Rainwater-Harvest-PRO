@@ -3,7 +3,10 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import MainLayout from '../layouts/MainLayout';
 import { useMap } from '../hooks/useMap';
+import { useTranslation } from "react-i18next";
+
 const MapExplorer: React.FC = () => {
+  const { t } = useTranslation();
   const { position } = useMap();
   const mapRef = useRef<any>(null);
   const [search, setSearch] = useState("");
@@ -32,9 +35,9 @@ const MapExplorer: React.FC = () => {
     <MainLayout>
       <div className="mb-6 flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">RainWise Map Explorer</h1>
+          <h1 className="text-2xl font-bold text-gray-800">RainWise {t("mapExplorer.title")}</h1>
           <p className="text-gray-600">
-            Explore rainwater harvesting data in your area
+           {t("mapExplorer.subtitle")}
           </p>
         </div>
       </div>
@@ -52,7 +55,7 @@ const MapExplorer: React.FC = () => {
           />
           <Marker position={[position.lat, position.lng]}>
             <Popup>
-              Your location<br />
+              {t("mapExplorer.yourLocation")}<br />
               (Lat: {position.lat}, Lng: {position.lng})
             </Popup>
           </Marker>
@@ -72,16 +75,16 @@ const MapExplorer: React.FC = () => {
                 type="text"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                placeholder="Search for a place..."
+                placeholder={t("mapExplorer.searchPlaceholder")}
                 className="flex-1 py-2 px-2 text-sm focus:outline-none rounded"
               />
-              <button type="submit" className="w-full sm:w-auto px-3 py-2 bg-blue-600 text-white rounded">Search</button>
+              <button type="submit" className="w-full sm:w-auto px-3 py-2 bg-blue-600 text-white rounded">{t("mapExplorer.searchButton")}</button>
             </form>
             <button
               onClick={handleZoomToUser}
               className="w-full sm:w-auto px-3 py-2 bg-green-600 text-white rounded shadow"
             >
-              Zoom to My Location
+              {t("mapExplorer.zoomButton")}
             </button>
           </div>
         </MapContainer>
