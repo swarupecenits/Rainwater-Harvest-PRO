@@ -24,7 +24,7 @@ const About: React.FC = () => {
   return <MainLayout>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">
-          About RainHarvest Pro
+          About RainWise
         </h1>
         <p className="text-gray-600">
           Our mission, team, and contact information
@@ -43,7 +43,7 @@ const About: React.FC = () => {
               </div>
             </div>
             <p className="mb-4 text-gray-700">
-              RainHarvest Pro was founded with a simple yet powerful vision: to
+              RainWise founded with a simple yet powerful vision: to
               make rainwater harvesting accessible, efficient, and widespread.
               In a world facing increasing water scarcity, we believe that every
               drop counts.
@@ -98,7 +98,7 @@ const About: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-medium">Email</h3>
-                  <p className="text-gray-600">info@rainharvestpro.com</p>
+                  <p className="text-gray-600">info@rainwise.com</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -107,7 +107,7 @@ const About: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-medium">Support</h3>
-                  <p className="text-gray-600">support@rainharvestpro.com</p>
+                  <p className="text-gray-600">support@rainwise.com</p>
                 </div>
               </div>
             </div>
@@ -169,7 +169,7 @@ const About: React.FC = () => {
           <div>
             <h3 className="font-medium mb-2">Can I use the app offline?</h3>
             <p className="text-gray-700">
-              Some features of RainHarvest Pro work offline, but for full
+              Some features of RainWise work offline, but for full
               functionality including GIS mapping and up-to-date rainfall data,
               an internet connection is recommended.
             </p>

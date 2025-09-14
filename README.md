@@ -1,8 +1,8 @@
 
-# 🌧️ Rooftop Rainwater Harvesting & Artificial Recharge Assessment App
+# 🌧️RainWise (Rooftop Rainwater Harvesting & Artificial Recharge Assessment App)
 
 ## 📌 Overview
-This project is a **web/mobile application** designed to enable **on-spot assessment of Rooftop Rainwater Harvesting (RTRWH)** and **Artificial Recharge (AR) potential**.  
+This project is a **web/mobile application** designed to enable **on-spot assessment of Rooftop Rainwater Harvesting (RainWise)** and **Artificial Recharge (AR) potential**.  
 The tool empowers individuals and communities to estimate **feasibility, structure size, cost, and water conservation benefits** by simply entering basic details like location, roof area, and available space.  
 
 Developed as part of a **hackathon project**, the app leverages **GIS-based data, rainfall statistics, and groundwater models** to provide practical and personalized solutions.
