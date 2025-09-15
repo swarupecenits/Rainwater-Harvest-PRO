@@ -12,7 +12,6 @@ import Reports from './pages/Reports';
 import KnowledgeHub from './pages/KnowledgeHub';
 import Settings from './pages/Settings';
 import About from './pages/About';
-import RoofAnalysis from './pages/RoofAnalysis';
 export function App() {
   return <Router>
       <Routes>
@@ -28,7 +27,6 @@ export function App() {
         <Route path="/knowledge" element={<KnowledgeHub />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/about" element={<About />} />
-  <Route path="/roof-analysis" element={<RoofAnalysis />} />
       </Routes>
     </Router>;
 }

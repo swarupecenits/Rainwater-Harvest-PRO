@@ -16,36 +16,9 @@ const Dashboard: React.FC = () => {
   const [weatherLoading, setWeatherLoading] = useState(false);
   const [weatherError, setWeatherError] = useState<string | null>(null);
   const [city, setCity] = useState('');
-   const [userName, setUserName] = useState<string>('');
 
   // Rainfall chart data state
   const [rainfallChartData, setRainfallChartData] = useState<{ time: Date[]; precipitation: number[]; rain: number[]; showers: number[] } | null>(null);
-
-    // Fetch user info from backend
-useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem('token'); // ⬅️ get token from localStorage
-      if (!token) return; // user not logged in
-
-      try {
-        const res = await fetch('http://localhost:5000/api/auth/me', {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}` // ⬅️ attach token
-          }
-        });
-        if (!res.ok) throw new Error('Unauthorized');
-
-        const data = await res.json();
-        setUserName(data.fullName || 'User');
-      } catch (err) {
-        console.error('Error fetching user:', err);
-        setUserName('User');
-      }
-    };
-
-    fetchUser();
-  }, []); // empty dependency → runs once on mount
 
   // Fetch rainfall chart data for user's location on mount
   useEffect(() => {
@@ -165,7 +138,7 @@ useEffect(() => {
   return <MainLayout>
     <div className="mb-6">
       <h1 className="text-2xl font-bold text-gray-800">
-       {t("welcome")} {userName} !
+       {t("welcome")} Swarup
       </h1>
       <p className="text-gray-600">
         {t("subtitle")}

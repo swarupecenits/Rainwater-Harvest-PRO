@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HomeIcon, DropletIcon, MapIcon, FileTextIcon, BookOpenIcon, SettingsIcon, MenuIcon, XIcon, BarChart2Icon } from 'lucide-react';
+import { HomeIcon, DropletIcon, MapIcon, FileTextIcon, BookOpenIcon, SettingsIcon, MenuIcon, XIcon } from 'lucide-react';
 interface NavItem {
   to: string;
   icon: React.ReactNode;
@@ -28,7 +28,6 @@ const NavBar: React.FC = () => {
     { to: '/map', icon: <MapIcon size={20} />, label: t("navbar.map") },
     { to: '/reports', icon: <FileTextIcon size={20} />, label: t("navbar.reports") },
     { to: '/knowledge', icon: <BookOpenIcon size={20} />, label: t("navbar.learn") },
-    { to: '/roof-analysis', icon: <BarChart2Icon size={20} />, label: t("navbar.roofAI") },
     { to: '/settings', icon: <SettingsIcon size={20} />, label: t("navbar.settings") }
   ];
   
