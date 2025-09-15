@@ -107,10 +107,10 @@ const AssessmentResults: React.FC = () => {
         </div>
         <div className="flex space-x-2">
           <Button variant="outline" icon={<ShareIcon size={16} />}>
-            Share
+            {t('common.share')}
           </Button>
           <Button variant="outline" icon={<DownloadIcon size={16} />}>
-            Download PDF
+            {t('results.savePdf')}
           </Button>
         </div>
       </div>
@@ -204,8 +204,8 @@ const AssessmentResults: React.FC = () => {
             <h3 className="font-semibold text-lg mb-3">Rainfall Distribution</h3>
             <div className="bg-gray-50 rounded-lg p-4 h-64 mb-6">
               <div className="flex items-center justify-between mb-4">
-                <h4 className="font-medium">Monthly Precipitation</h4>
-                <span className="text-sm text-gray-500">mm/month</span>
+                <h4 className="font-medium">{t('results.monthlyPrecipitation')}</h4>
+                <span className="text-sm text-gray-500">{t('results.mmPerMonth')}</span>
               </div>
               <div className="relative h-48">
                 <div className="absolute bottom-0 left-0 right-0 flex items-end justify-around h-40">
@@ -232,8 +232,8 @@ const AssessmentResults: React.FC = () => {
             <h3 className="font-semibold text-lg mb-3">Groundwater Level</h3>
             <div className="bg-gray-50 rounded-lg p-4 mb-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-500">Surface</span>
-                <span className="text-sm text-gray-500">Depth (m)</span>
+                <span className="text-sm text-gray-500">{t('results.surface')}</span>
+                <span className="text-sm text-gray-500">{t('results.depth')}</span>
               </div>
               <div className="relative h-16 bg-gradient-to-b from-blue-100 to-blue-300 rounded-md">
                 <div className="absolute left-0 right-0 top-1/2 border-t-2 border-dashed border-blue-600"></div>
@@ -252,7 +252,7 @@ const AssessmentResults: React.FC = () => {
         {/* ===== RIGHT SECTION ===== */}
         <div>
           <Card className="p-6 mb-6">
-            <h3 className="font-semibold text-lg mb-4">Cost Estimation</h3>
+            <h3 className="font-semibold text-lg mb-4">{t('results.costEstimation')}</h3>
             <div className="mb-4">
               <div className="flex justify-between mb-1">
                 <span className="text-gray-600">Storage Tank</span>
@@ -284,7 +284,7 @@ const AssessmentResults: React.FC = () => {
 
             {/* ROI */}
             <div className="mt-6">
-              <h4 className="font-medium mb-2">Return on Investment</h4>
+              <h4 className="font-medium mb-2">{t('results.returnOnInvestment')}</h4>
               <div className="bg-green-50 rounded-lg p-4 text-center mb-4">
                 <p className="text-sm text-gray-600 mb-1">Estimated Annual Savings</p>
                 <p className="text-2xl font-bold text-green-700">
@@ -295,7 +295,7 @@ const AssessmentResults: React.FC = () => {
                 </p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
-                <h4 className="font-medium mb-2">Environmental Impact</h4>
+                <h4 className="font-medium mb-2">{t('results.environmentalImpact')}</h4>
                 <div className="flex items-center mb-2">
                   <DropletIcon className="h-5 w-5 text-blue-600 mr-2" />
                   <span className="text-sm">
@@ -317,7 +317,7 @@ const AssessmentResults: React.FC = () => {
 
           {/* Next steps */}
           <Card className="p-6">
-            <h3 className="font-semibold text-lg mb-4">Next Steps</h3>
+            <h3 className="font-semibold text-lg mb-4">{t('results.nextSteps')}</h3>
             <div className="space-y-4">
               <div className="flex items-start">
                 <div className="bg-blue-100 rounded-full p-1 mr-3">
@@ -345,9 +345,7 @@ const AssessmentResults: React.FC = () => {
                     3
                   </span>
                 </div>
-                <p className="text-sm text-gray-600">
-                  Review our knowledge hub for maintenance best practices.
-                </p>
+                <p className="text-sm text-gray-600">{t('results.step3')}</p>
               </div>
             </div>
             <div className="mt-6">
