@@ -53,6 +53,36 @@ const AssessmentInput: React.FC = () => {
     { value: "chalky", label: t("assessment.soilTypes.chalky") },
   ];
 
+
+  // Validation logic for each step
+  const isStepValid = () => {
+    if (currentStep === 1) {
+      return (
+        formData.name.trim() &&
+        formData.dwellers.trim() &&
+        formData.phone.trim() &&
+        formData.email.trim()
+      );
+    }
+    if (currentStep === 2) {
+      return (
+        formData.roofArea.trim() &&
+        formData.openSpace.trim() &&
+        formData.roofType.trim() &&
+        formData.soilType.trim()
+      );
+    }
+    if (currentStep === 3) {
+      return (
+        formData.address.trim() &&
+        formData.latitude.trim() &&
+        formData.longitude.trim() &&
+        formData.rainfall.trim()
+      );
+    }
+    return false;
+  };
+
   // navigation buttons
   const handlePrevStep = () => {
     if (currentStep > 1) {
@@ -60,28 +90,28 @@ const AssessmentInput: React.FC = () => {
     }
   };
 
-const handleNextStep = async () => {
-  if (currentStep < 3) {
-    setCurrentStep(currentStep + 1);
-  } else {
-    try {
-      const token = localStorage.getItem("token"); // get from auth
+  const handleNextStep = async () => {
+    if (currentStep < 3) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      try {
+        const token = localStorage.getItem("token"); // get from auth
 
-      await fetch("http://localhost:5000/api/assessments", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData), // <-- formData should have all fields
-      });
+        await fetch("http://localhost:5000/api/assessments", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(formData), // <-- formData should have all fields
+        });
 
-      navigate("/results");
-    } catch (error) {
-      console.error("Failed to save assessment", error);
+        navigate("/results");
+      } catch (error) {
+        console.error("Failed to save assessment", error);
+      }
     }
-  }
-};
+  };
 
 
   return (
@@ -311,7 +341,11 @@ const handleNextStep = async () => {
           ) : (
             <div></div>
           )}
-          <Button variant="primary" onClick={handleNextStep}>
+          <Button
+            variant="primary"
+            onClick={handleNextStep}
+            disabled={!isStepValid()}
+          >
             {currentStep === 3
               ? t("assessment.buttons.submit")
               : t("assessment.buttons.next")}
