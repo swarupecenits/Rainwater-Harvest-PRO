@@ -140,30 +140,7 @@ def main():
     soil_type = args.soil_type.strip().lower()
     roof_slope = max(args.roof_slope, 0.0)
 
-    # Coefficient mapping
-    base_coeffs = {
-        'rcc': 0.85,
-        'concrete': 0.85,
-        'tile': 0.75,
-        'corrugated': 0.70,
-        'sheet': 0.70,
-        'asbestos': 0.65,
-        'poor': 0.65,
-        'thatch': 0.60,
-        'metal': 0.80,
-    }
-    coeff = base_coeffs.get(roof_type, 0.70)
-    # Adjust for slope: mild bonus up to +5% if slope between 5 and 25 degrees
-    if 5 <= roof_slope <= 25:
-        coeff *= 1.03
-    coeff = min(coeff, 0.9)
-
-    if args.catchment_eff is not None:
-        catchment_eff = max(0.0, min(1.0, args.catchment_eff))
-    else:
-        catchment_eff = coeff
-
-    potential_water_save_l_per_year = annual_rainfall_mm * roof_area_m2 * catchment_eff
+ 
 
     # Simple heuristic for recommended tank sizing:
     # - Provide storage for 1.5 months of average collection (i.e., annual / 8)
