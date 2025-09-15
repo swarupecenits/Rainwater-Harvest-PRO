@@ -165,7 +165,7 @@ useEffect(() => {
   return <MainLayout>
     <div className="mb-6">
       <h1 className="text-2xl font-bold text-gray-800">
-       {t("welcome")} {userName}!
+       {t("welcome")} {userName} !
       </h1>
       <p className="text-gray-600">
         {t("subtitle")}
