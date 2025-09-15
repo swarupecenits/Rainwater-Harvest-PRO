@@ -97,6 +97,7 @@ i18n.use(initReactI18next).init({
                     reports: "Reports",
                     learn: "Learn",
                     settings: "Settings",
+                    roofAI: "Roof AI",
                 },
                 reports: {
                 AssessmentReports: "Assessment Reports",
@@ -277,7 +278,8 @@ i18n.use(initReactI18next).init({
                     map: "मानचित्र",
                     reports: "रिपोर्ट्स",
                     learn: "सीखें",
-                    settings: "सेटिंग्स"
+                    settings: "सेटिंग्स",
+                    roofAI: "रूफ AI"
                 },
                 welcome: "वापसी पर स्वागत है, स्वरूप",
                 subtitle: "आइए आपके वर्षा जल संचयन की क्षमता का पता लगाएं",
@@ -476,7 +478,8 @@ i18n.use(initReactI18next).init({
                     map: "मानचित्र",
                     reports: "रिपोर्ट्स",
                     learn: "सीखें",
-                    settings: "सेटिंग्स"
+                    settings: "सेटिंग्स",
+                    roofAI: "रूफ AI"
                 },
                 reports: {
                 AssessmentReports: "अकलन रिपोर्ट",
