@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { DropletIcon, MailIcon, LockIcon, UserIcon } from 'lucide-react';
 import Button from '../../components/ui/Button';
@@ -6,17 +6,43 @@ import Input from '../../components/ui/Input';
 import MainLayout from '../../layouts/MainLayout';
 const Signup: React.FC = () => {
   const navigate = useNavigate();
-  const handleSignup = (e: React.FormEvent) => {
-    e.preventDefault();
-    navigate('/dashboard');
+  const [form, setForm] = useState({ fullName: '', email: '', password: '' });
+  const [error, setError] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+       const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem('token', data.token);
+        navigate('/login');
+      } else {
+        const data = await res.json();
+        setError(data.message || 'Signup failed');
+      }
+    } catch (err) {
+      setError('Network error');
+    }
+  };
+
   return <MainLayout hideNavbar>
       <div className="flex flex-col items-center justify-center min-h-screen p-6">
         <div className="w-full max-w-md">
           <div className="flex items-center justify-center mb-8">
             <DropletIcon className="h-10 w-10 text-blue-600 mr-2" />
             <h1 className="text-2xl font-bold text-gray-800">
-              RainWise
+              RainHarvest Pro
             </h1>
           </div>
           <div className="bg-white rounded-xl shadow-sm p-8">
@@ -24,9 +50,9 @@ const Signup: React.FC = () => {
               Create an Account
             </h2>
             <form onSubmit={handleSignup}>
-              <Input label="Full Name" placeholder="John Doe" icon={<UserIcon size={18} />} required />
-              <Input label="Email" type="email" placeholder="your@email.com" icon={<MailIcon size={18} />} required />
-              <Input label="Password" type="password" placeholder="••••••••" icon={<LockIcon size={18} />} required />
+              <Input label="Full Name" name="fullName" placeholder="John Doe" icon={<UserIcon size={18} />} required value={form.fullName} onChange={handleChange} />
+              <Input label="Email" name="email" type="email" placeholder="your@email.com" icon={<MailIcon size={18} />} required value={form.email} onChange={handleChange} />
+              <Input label="Password" name="password" type="password" placeholder="••••••••" icon={<LockIcon size={18} />} required value={form.password} onChange={handleChange} />
               <div className="flex items-center mb-6">
                 <input id="terms" name="terms" type="checkbox" className="h-4 w-4 text-blue-600 rounded border-gray-300" required />
                 <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
@@ -40,6 +66,7 @@ const Signup: React.FC = () => {
                   </a>
                 </label>
               </div>
+              {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
               <Button variant="primary" fullWidth size="lg" type="submit">
                 Sign up
               </Button>
