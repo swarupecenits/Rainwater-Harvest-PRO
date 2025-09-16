@@ -55,13 +55,14 @@ const AssessmentResults: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const token = localStorage.getItem("token");
       try {
-        const token = localStorage.getItem("token");
-  const response = await apiFetch("/api/assessments/latest", {
+        
+          const response = await apiFetch("/api/assessments/latest", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          },
+          }
         });
         if (!response.ok) {
           throw new Error("Failed to fetch assessment data");
