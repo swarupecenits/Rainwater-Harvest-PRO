@@ -1,4 +1,11 @@
 import React, { useState, useRef } from 'react';
+// Markdown renderer (installed via react-markdown + remark-gfm)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore - types will resolve after dependency installation
+import ReactMarkdown from 'react-markdown';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import remarkGfm from 'remark-gfm';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { UploadIcon, ImageIcon, SendIcon, RefreshCcwIcon, Loader2Icon, BarChart2Icon, DropletIcon } from 'lucide-react';
@@ -8,37 +15,21 @@ interface ChatMessage {
   content: string;
 }
 
-// Mock analysis function (placeholder for future backend integration)
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const mockAnalyseRoof = async (_file: File): Promise<{ quality: string; score: number; notes: string[]; recommendations: string[]; areaEstimate?: number; captureQuality: string; runoffPotential: string; }> => {
-  // Placeholder for future backend/AI integration
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({
-        quality: 'Good',
-        score: 78,
-        notes: [
-          'Roof edges appear mostly intact',
-          'Minor debris detected in one section',
-          'No obvious standing water regions'
-        ],
-        recommendations: [
-          'Clear visible debris to improve first flush quality',
-          'Inspect gutters for sediment build‑up',
-          'Consider installing a leaf screen on northern edge'
-        ],
-        areaEstimate: Math.round(50 + Math.random() * 120),
-        captureQuality: 'Moderate',
-        runoffPotential: 'High'
-      });
-    }, 1200);
-  });
-};
+interface RoofAIAnalysis {
+  quality: string;
+  score: number;
+  notes: string[];
+  recommendations: string[];
+  areaEstimate?: number | null;
+  captureQuality: string;
+  runoffPotential: string;
+  summary?: string;
+}
 
 const RoofAnalysis: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [analysis, setAnalysis] = useState<Awaited<ReturnType<typeof mockAnalyseRoof>> | null>(null);
+  const [analysis, setAnalysis] = useState<RoofAIAnalysis | null>(null);
   const [loading, setLoading] = useState(false);
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([{
@@ -66,10 +57,28 @@ const RoofAnalysis: React.FC = () => {
   const runAnalysis = async () => {
     if (!selectedFile) return;
     setLoading(true);
-    const result = await mockAnalyseRoof(selectedFile);
-    setAnalysis(result);
-    setLoading(false);
-    setMessages(prev => [...prev, { role: 'assistant', content: `Analysis complete. Score: ${result.score}/100 (Quality: ${result.quality}). Ask anything about the result or how to improve.` }]);
+    try {
+      const toBase64 = (file: File) => new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      const b64 = await toBase64(selectedFile);
+      const res = await fetch('/api/roof-ai-analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: b64, filename: selectedFile.name })
+      });
+      if (!res.ok) throw new Error('Analysis failed');
+      const data: RoofAIAnalysis = await res.json();
+      setAnalysis(data);
+      setMessages(prev => [...prev, { role: 'assistant', content: `Analysis complete. Score: ${data.score}/100 (Quality: ${data.quality}). ${data.summary || ''}` }]);
+    } catch (err) {
+      setMessages(prev => [...prev, { role: 'assistant', content: 'Analysis failed. Please try another image or retry later.' }]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const reset = () => {
@@ -138,7 +147,7 @@ const RoofAnalysis: React.FC = () => {
               </div>
               <div className="w-full md:w-1/2 space-y-4">
                 <h2 className="text-lg font-semibold text-gray-700">Result Overview</h2>
-                {!analysis && <p className="text-sm text-gray-500">No analysis yet. Upload an image and click Analyse to view roof suitability metrics.</p>}
+                {!analysis && <p className="text-sm text-gray-500">No analysis yet. Upload an image and click Analyse to view AI-derived roof suitability metrics.</p>}
                 {analysis && (
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
@@ -158,13 +167,14 @@ const RoofAnalysis: React.FC = () => {
                         <p className="text-xs uppercase tracking-wide text-amber-600 font-semibold">Capture Quality</p>
                         <p className="text-lg font-semibold text-amber-700">{analysis.captureQuality}</p>
                       </div>
-                      {analysis.areaEstimate && (
-                        <div className="bg-slate-50 rounded-lg p-3 col-span-2">
-                          <p className="text-xs uppercase tracking-wide text-slate-600 font-semibold">Est. Roof Area</p>
-                          <p className="text-lg font-semibold text-slate-800">{analysis.areaEstimate} m²</p>
-                        </div>
-                      )}
+                      {/* Removed Est. Roof Area display as per request */}
                     </div>
+                    {analysis.summary && (
+                      <div className="bg-white border rounded-lg p-3">
+                        <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold mb-1">AI Summary</p>
+                        <p className="text-sm text-gray-700 leading-snug">{analysis.summary}</p>
+                      </div>
+                    )}
                     <div>
                       <p className="text-sm font-semibold text-gray-700 mb-1">Observations</p>
                       <ul className="list-disc ml-5 space-y-1 text-sm text-gray-600">
@@ -193,11 +203,31 @@ const RoofAnalysis: React.FC = () => {
           <Card className="flex flex-col h-[600px]">
             <h2 className="text-lg font-semibold text-gray-700 mb-3">Ask AI About This Roof</h2>
             <div className="flex-1 overflow-y-auto space-y-3 pr-1">
-              {messages.map((m, idx) => (
-                <div key={idx} className={`rounded-lg px-3 py-2 text-sm max-w-[85%] ${m.role === 'user' ? 'bg-blue-600 text-white ml-auto' : 'bg-gray-100 text-gray-800'} `}>
-                  {m.content}
-                </div>
-              ))}
+              {messages.map((m, idx) => {
+                const isUser = m.role === 'user';
+                return (
+                  <div
+                    key={idx}
+                    className={`rounded-lg px-3 py-2 text-sm max-w-[85%] prose prose-sm dark:prose-invert ${isUser ? 'bg-blue-600 text-white ml-auto prose-invert' : 'bg-gray-100 text-gray-800'} whitespace-pre-wrap`}
+                  >
+                    {isUser ? (
+                      m.content
+                    ) : (
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          ul: (props: React.HTMLAttributes<HTMLUListElement>) => <ul className="list-disc ml-4 space-y-1" {...props} />,
+                          ol: (props: React.HTMLAttributes<HTMLOListElement>) => <ol className="list-decimal ml-4 space-y-1" {...props} />,
+                          strong: (props: React.HTMLAttributes<HTMLElement>) => <strong className="font-semibold" {...props} />,
+                          p: (props: React.HTMLAttributes<HTMLParagraphElement>) => <p className="mb-2 last:mb-0" {...props} />
+                        }}
+                      >
+                        {m.content}
+                      </ReactMarkdown>
+                    )}
+                  </div>
+                );
+              })}
               {chatLoading && <div className="text-xs text-gray-500 italic">Thinking...</div>}
               {chatError && <div className="text-xs text-red-500">{chatError}</div>}
             </div>

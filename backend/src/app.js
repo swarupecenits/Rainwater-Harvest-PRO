@@ -71,6 +71,109 @@ app.post('/api/roof-ai-chat', async (req, res) => {
   }
 });
 
+// Roof image analysis endpoint (beta)
+// Accepts: { image: <base64 data URL or raw base64>, filename?: string }
+// Returns: { quality, score, notes[], recommendations[], areaEstimate, captureQuality, runoffPotential, summary }
+app.post('/api/roof-ai-analyze', async (req, res) => {
+  try {
+    if (!GEMINI_API_KEY) {
+      return res.status(500).json({ error: 'Server missing Google Gemini API key' });
+    }
+    const { image, filename } = req.body || {};
+    if (!image) {
+      return res.status(400).json({ error: 'image (base64) required' });
+    }
+
+    // Normalize base64 (strip data URL prefix if present) and extract mime type
+    let base64Data = image;
+    let mimeType = 'image/jpeg';
+    const dataUrlMatch = /^data:(.*?);base64,(.*)$/.exec(image);
+    if (dataUrlMatch) {
+      mimeType = dataUrlMatch[1] || 'image/jpeg';
+      base64Data = dataUrlMatch[2];
+    } else if (image.includes(',')) {
+      // Fallback split if unusual format
+      base64Data = image.split(',').pop();
+    }
+
+    const model = genAI.getGenerativeModel({ model: GEMINI_MODEL, systemInstruction: 'You analyze rooftop images for rainwater harvesting suitability.' });
+
+    // Vision + text prompt (multimodal) so model can vary score based on actual image content.
+    const analysisPrompt = `You are an expert in rainwater harvesting potential analysis.
+You are given a rooftop image (possibly aerial or satellite). Use ONLY visible cues.
+Scoring rubric (0-100):
+  90-100: Extremely clean roof, large unobstructed area, optimal drainage, no visible debris.
+  75-89: Generally clean, minor debris or partial shading, good drainage.
+  55-74: Moderate suitability, notable debris, patchy staining, partial obstructions, uneven surfaces.
+  35-54: Significant issues: heavy debris, many obstructions, staining suggesting pooling.
+  0-34: Very poor: severe damage, extensive vegetation, unusable for collection without major remediation.
+Produce a concise JSON ONLY response (no markdown) with this schema:
+{
+  "quality": "Excellent|Good|Moderate|Poor",
+  "score": <0-100 integer>,
+  "captureQuality": "High|Moderate|Low|Variable",
+  "runoffPotential": "High|Medium|Low",
+  "areaEstimate": <integer square meters or null>,
+  "notes": ["short observation", ...],
+  "recommendations": ["action item", ...],
+  "summary": "1-2 sentence plain language summary"
+}
+Consider roof clarity, obstructions, debris, slope cues (shadows), drainage paths, edge integrity and potential collection surfaces.
+If uncertain about any numeric value, use a plausible conservative estimate or null for areaEstimate.
+Avoid repeating generic phrasing; tailor observations to visible elements (e.g., debris type, discoloration, shadow patterns).
+Return ONLY valid JSON.`;
+
+    let rawText;
+    try {
+      const result = await model.generateContent([
+        { inlineData: { data: base64Data, mimeType } },
+        { text: analysisPrompt }
+      ]);
+      rawText = result.response.text();
+    } catch (gemErr) {
+      console.error('[Gemini Analyze Error]', gemErr?.response || gemErr.message || gemErr);
+      return res.status(502).json({ error: 'Upstream AI error', detail: gemErr.message || 'Unknown Gemini error' });
+    }
+
+    // Attempt to extract JSON (remove stray backticks or text)
+    let jsonString = rawText.trim();
+    jsonString = jsonString.replace(/^```json|^```|```$/gmi, '').trim();
+    let parsed;
+    try {
+      parsed = JSON.parse(jsonString);
+    } catch (e) {
+      console.warn('[Parse Warning] Falling back to default structure. Raw:', rawText);
+      parsed = {
+        quality: 'Moderate',
+        score: 60,
+        captureQuality: 'Moderate',
+        runoffPotential: 'Medium',
+        areaEstimate: null,
+        notes: ['Automatic parsing failed; using fallback values'],
+        recommendations: ['Retry analysis later'],
+        summary: 'Initial automated analysis placeholder.'
+      };
+    }
+
+    // Minimal validation and shaping
+    const responsePayload = {
+      quality: parsed.quality || 'Moderate',
+      score: typeof parsed.score === 'number' ? parsed.score : 55,
+      captureQuality: parsed.captureQuality || 'Moderate',
+      runoffPotential: parsed.runoffPotential || 'Medium',
+      areaEstimate: typeof parsed.areaEstimate === 'number' ? parsed.areaEstimate : null,
+      notes: Array.isArray(parsed.notes) ? parsed.notes.slice(0, 10) : [],
+      recommendations: Array.isArray(parsed.recommendations) ? parsed.recommendations.slice(0, 10) : [],
+      summary: parsed.summary || 'Summary not available.'
+    };
+
+    res.json(responsePayload);
+  } catch (err) {
+    console.error('[RoofAI Analyze Unexpected]', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Other API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/assessments', assessmentRoutes);
