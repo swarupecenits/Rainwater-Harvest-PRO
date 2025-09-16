@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import {
   DownloadIcon,
@@ -46,6 +47,7 @@ interface AssessmentData {
 
 const AssessmentResults: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [data, setData] = useState<AssessmentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -54,7 +56,7 @@ const AssessmentResults: React.FC = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:5000/api/assessments/latest", {
+  const response = await fetch("/api/assessments/latest", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -65,8 +67,9 @@ const AssessmentResults: React.FC = () => {
         }
         const result = await response.json();
         setData(result);
-      } catch (err: any) {
-        setError(err.message || "Something went wrong");
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Something went wrong';
+        setError(message);
       } finally {
         setLoading(false);
       }

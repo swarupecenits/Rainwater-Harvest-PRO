@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import MainLayout from '../layouts/MainLayout';
 import { UploadIcon, ImageIcon, SendIcon, RefreshCcwIcon, Loader2Icon, BarChart2Icon, DropletIcon } from 'lucide-react';
 
 interface ChatMessage {
@@ -116,7 +117,7 @@ const RoofAnalysis: React.FC = () => {
   };
 
   return (
-    <div className="md:ml-64 p-4 md:p-8 bg-gray-50 min-h-screen">
+    <MainLayout>
       <h1 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><DropletIcon className="mr-2 text-blue-600" /> Roof AI Analysis</h1>
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Left / Main Column */}
@@ -245,7 +246,7 @@ const RoofAnalysis: React.FC = () => {
           </Card>
         </div>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 

@@ -20,27 +20,45 @@ router.get("/latest", auth, async (req, res) => {
       return res.status(404).json({ message: "No assessment found" });
     }
 
-    // 🔹 Call ML service to compute Potential Harvest
-    const mlResponse = await fetch("http://127.0.0.1:8000/predict", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        roof_area: assessment.roofArea,
-        annual_rainfall: assessment.rainfall,
-        roof_type: assessment.roofType,
-        soil_type: assessment.soilType,
-      }),
-    });
-
-    let mlData;
+    // 🔹 Call ML service to compute Potential Harvest (configurable URL)
+    const mlBase = process.env.ML_SERVICE_URL || "http://127.0.0.1:8000";
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 7000); // 7s timeout
+    let mlData = { potential_harvest: 0, tank_volume: 0, efficiency: 0, inertia: 0 };
     try {
+      const mlResponse = await fetch(`${mlBase}/predict`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          roof_area: assessment.roofArea,
+          annual_rainfall: assessment.rainfall,
+          roof_type: assessment.roofType,
+          soil_type: assessment.soilType,
+        }),
+        signal: controller.signal
+      });
+      clearTimeout(timeout);
+      if (!mlResponse.ok) {
+        const text = await mlResponse.text();
+        console.error("ML service non-OK:", mlResponse.status, text);
+        return res.status(502).json({ message: "ML service error", status: mlResponse.status, details: text });
+      }
       mlData = await mlResponse.json();
+      console.log("ML API response:", mlData);
     } catch (e) {
-      const text = await mlResponse.text();
-      console.error("ML API error response:", text);
-      return res.status(500).json({ message: "ML API error", details: text });
+      clearTimeout(timeout);
+      const reason = e.name === 'AbortError' ? 'timeout' : e.message;
+      console.error("ML service fetch failed:", reason);
+      // Continue but flag degraded data
+      return res.status(502).json({
+        message: "ML service unreachable",
+        details: reason,
+        potentialHarvest: 0,
+        tankVolume: 0,
+        efficiency: 0,
+        inertia: 0
+      });
     }
-    console.log("ML API response:", mlData); // <-- Add this line
     // Attach result from Python model
     const responseData = {
       ...assessment.toObject(),
