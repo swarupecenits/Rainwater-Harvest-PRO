@@ -11,7 +11,23 @@ dotenv.config();
 
 const app = express();
 app.use(express.json({ limit: '5mb' }));
-app.use(cors({ origin: 'https://rainwater-harvest.netlify.app' }));
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://rainwater-harvest.netlify.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
+
 
 // Health check endpoint
 app.get('/api/health', (_, res) => res.json({ ok: true }));

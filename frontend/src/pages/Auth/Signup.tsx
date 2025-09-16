@@ -27,6 +27,7 @@ const Signup: React.FC = () => {
         auth: false
       });
       if (data?.token) {
+        localStorage.setItem('token', data.token);
         login(data.token);
         navigate('/dashboard');
       } else {

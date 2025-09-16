@@ -14,6 +14,7 @@ import Input from "../../components/ui/Input";
 import Dropdown from "../../components/ui/Dropdown";
 import Button from "../../components/ui/Button";
 import { useTranslation } from "react-i18next";
+import { apiFetch } from "../../lib/api";
 
 const AssessmentInput: React.FC = () => {
   const navigate = useNavigate();
@@ -97,7 +98,7 @@ const AssessmentInput: React.FC = () => {
       try {
         const token = localStorage.getItem("token"); // get from auth
 
-  await fetch("/api/assessments", {
+  await apiFetch("/api/assessments", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

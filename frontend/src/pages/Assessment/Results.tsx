@@ -16,6 +16,7 @@ import {
 import MainLayout from "../../layouts/MainLayout";
 import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
+import { apiFetch } from "../../lib/api";
 
 interface AssessmentData {
   feasibility: string;
@@ -56,7 +57,7 @@ const AssessmentResults: React.FC = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-  const response = await fetch("/api/assessments/latest", {
+  const response = await apiFetch("/api/assessments/latest", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,

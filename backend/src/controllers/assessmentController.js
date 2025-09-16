@@ -67,9 +67,9 @@ export const getLatestAssessment = async (req, res) => {
     if (!latest) {
       return res.status(404).json({ message: "No assessment found" });
     }
-
+    const endpoint = process.env.ML_SERVICE_URL;
     // 2. Send data to Python API
-    const pyRes = await fetch("https://rainwater-harvest-pro.onrender.com/calculate", {
+    const pyRes = await fetch(`${ML_SERVICE_URL}/calculate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
