@@ -69,7 +69,7 @@ export const getLatestAssessment = async (req, res) => {
     }
 
     // 2. Send data to Python API
-    const pyRes = await fetch("http://localhost:8000/calculate", {
+    const pyRes = await fetch("https://rainwater-harvest-pro.onrender.com/calculate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
