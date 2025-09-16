@@ -28,7 +28,7 @@ useEffect(() => {
       if (!token) return; // user not logged in
 
       try {
-        const res = await fetch('http://localhost:5000/api/auth/me', {
+        const res = await fetch('https://rainwater-harvest-pro-1.onrender.com/api/auth/me', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}` // ⬅️ attach token
