@@ -14,7 +14,8 @@ app.use(express.json({ limit: '5mb' }));
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
-  'https://rainwater-harvest.netlify.app'
+  'https://rainwater-harvest.netlify.app',
+  'https://rain-wise.netlify.app'
 ];
 
 app.use(cors({
