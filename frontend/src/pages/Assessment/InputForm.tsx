@@ -97,7 +97,7 @@ const AssessmentInput: React.FC = () => {
       try {
         const token = localStorage.getItem("token"); // get from auth
 
-        await fetch("http://localhost:5000/api/assessments", {
+  await fetch("/api/assessments", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
