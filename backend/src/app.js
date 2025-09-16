@@ -11,7 +11,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.json({ limit: '5mb' }));
-app.use(cors({ origin: '*' }));
+app.use(cors({ origin: 'https://rainwater-harvest.netlify.app' }));
 
 // Health check endpoint
 app.get('/api/health', (_, res) => res.json({ ok: true }));
