@@ -28,7 +28,9 @@ useEffect(() => {
       if (!token) return; // user not logged in
 
       try {
-        const res = await fetch('https://rainwater-harvest-pro-1.onrender.com/api/auth/me', {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+  const normalizedBase = baseUrl.replace(/\/$/, '');
+        const res = await fetch(`${normalizedBase}/api/auth/me`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}` // ⬅️ attach token
