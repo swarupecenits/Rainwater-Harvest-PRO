@@ -13,6 +13,7 @@ const app = express();
 app.use(express.json({ limit: '5mb' }));
 const allowedOrigins = [
   'http://localhost:5173',
+  'http://localhost:5174',
   'https://rainwater-harvest.netlify.app'
 ];
 
