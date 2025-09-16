@@ -5,6 +5,7 @@ import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import MainLayout from '../../layouts/MainLayout';
 import { useAuth } from '../../context/AuthContext';
+import { apiFetch } from '../../lib/api';
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, login } = useAuth();
@@ -19,20 +20,20 @@ const Login: React.FC = () => {
     e.preventDefault();
     setError('');
     try {
-  const res = await fetch('/api/auth/login', {
+      const data = await apiFetch<{ token: string; message?: string }>('/api/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
+        headers: { 'Content-Type': 'application/json' },
+        auth: false
       });
-      const data = await res.json();
-      if (res.ok) {
+      if (data?.token) {
         login(data.token);
         navigate('/dashboard');
       } else {
-        setError(data.message || 'Login failed');
+        setError(data?.message || 'Login failed');
       }
     } catch (err) {
-      setError('Network error');
+      if (err instanceof Error) setError(err.message); else setError('Login failed');
     }
   };
 
