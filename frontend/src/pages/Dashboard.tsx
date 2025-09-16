@@ -151,7 +151,7 @@ useEffect(() => {
       title: t("quickActions.localRainfall"),
       icon: <CloudRainIcon className="h-8 w-8 text-cyan-600" />,
       description:t("quickActions.localRainfallDesc"),
-      action: () =>navigate('/map'),
+      action: () =>navigate('/roof-analysis'),
       color: 'bg-cyan-50'
     },
     {
