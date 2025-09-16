@@ -21,7 +21,7 @@ router.get("/latest", auth, async (req, res) => {
     }
 
     // 🔹 Call ML service to compute Potential Harvest (configurable URL)
-    const mlBase = process.env.ML_SERVICE_URL || "http://127.0.0.1:8000";
+    const mlBase = process.env.ML_SERVICE_URL;
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 7000); // 7s timeout
     let mlData = { potential_harvest: 0, tank_volume: 0, efficiency: 0, inertia: 0 };
