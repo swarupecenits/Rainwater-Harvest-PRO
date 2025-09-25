@@ -1,8 +1,8 @@
-
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import fetch from 'node-fetch';
 import authRoutes from './routes/authRoutes.js';
 import assessmentRoutes from './routes/assessmentRoutes.js';
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -15,6 +15,30 @@ app.use(cors({ origin: 'https://rain-wise.netlify.app' }));
 
 // Health check endpoint
 app.get('/api/health', (_, res) => res.json({ ok: true }));
+
+const keepAliveUrl = (process.env.SELF_PING_URL || process.env.RENDER_EXTERNAL_URL || '').replace(/\/$/, '');
+const defaultKeepAliveMs = 14 * 60 * 1000;
+const envKeepAliveMs = Number(process.env.KEEP_ALIVE_INTERVAL_MS);
+const keepAliveIntervalMs = Number.isFinite(envKeepAliveMs) && envKeepAliveMs > 0 ? envKeepAliveMs : defaultKeepAliveMs;
+
+async function keepServerAwake() {
+  if (!keepAliveUrl) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`${keepAliveUrl}/api/health`);
+    console.log(`Keep-alive ping succeeded: ${response.status} at ${new Date().toISOString()}`);
+  } catch (error) {
+    console.error(`Keep-alive ping failed: ${error.message}`);
+  }
+}
+
+if (process.env.NODE_ENV === 'production' && keepAliveUrl) {
+  setInterval(keepServerAwake, keepAliveIntervalMs);
+  keepServerAwake();
+  console.log(`Keep-alive ping started for: ${keepAliveUrl} (every ${keepAliveIntervalMs}ms)`);
+}
 
 // Gemini AI Chat Endpoint
 const GEMINI_API_KEY = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;

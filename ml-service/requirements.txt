@@ -8,3 +8,4 @@ joblib
 python-dateutil
 pytz
 pydantic
+httpx
