@@ -8,3 +8,8 @@
   to = "https://rainwater-harvest-pro-2.onrender.com/api/:splat"
   status = 200
   force = true # This is important for proxying API requests   
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
