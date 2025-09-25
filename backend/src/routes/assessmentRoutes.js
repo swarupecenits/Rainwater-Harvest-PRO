@@ -22,11 +22,22 @@ router.get("/latest", auth, async (req, res) => {
 
     // 🔹 Call ML service to compute Potential Harvest (configurable URL)
     const mlBase = process.env.ML_SERVICE_URL;
+    if (!mlBase) {
+      console.error("ML service URL missing (ML_SERVICE_URL)");
+      return res.status(502).json({
+        message: "ML service URL not configured",
+      });
+    }
+
+    const trimmedBase = mlBase.replace(/\/+$/, "");
+    const mlUrl = /(\/calculate|\/predict)$/i.test(trimmedBase)
+      ? trimmedBase
+      : `${trimmedBase}/calculate`;
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 7000); // 7s timeout
     let mlData = { potential_harvest: 0, tank_volume: 0, efficiency: 0, inertia: 0 };
     try {
-      const mlResponse = await fetch(`${mlBase}/predict`, {
+      const mlResponse = await fetch(mlUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
