@@ -13,6 +13,7 @@ const app = express();
 app.use(express.json({ limit: '5mb' }));
 app.use(cors({ origin: ['https://rain-wise.netlify.app', 'https://rainwater-harvest.netlify.app'] }));
 
+
 // Health check endpoint
 app.get('/api/health', (_, res) => res.json({ ok: true }));
 
