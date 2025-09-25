@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 import uvicorn
@@ -24,10 +25,9 @@ def predict(data: AssessmentInput):
         "tank_volume": result["tank_volume"],
         "efficiency": result["efficiency"],
         "inertia": result["inertia"]
-
-
     }
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-
+    # Get the port from the environment variable, with a default for local testing
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
