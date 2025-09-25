@@ -57,7 +57,6 @@ def predict(data: AssessmentInput):
 def calculate(data: AssessmentInput):
     return _run_prediction(data)
 
-
 @app.get("/health")
 def health():
     return {"ok": True}
@@ -97,6 +96,7 @@ async def _stop_keep_awake():
         with suppress(asyncio.CancelledError):
             await _keep_alive_task
         _keep_alive_task = None
+
 
 if __name__ == "__main__":
     # Get the port from the environment variable, with a default for local testing
