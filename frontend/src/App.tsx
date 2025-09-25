@@ -15,6 +15,7 @@ import KnowledgeHub from './pages/KnowledgeHub';
 import Settings from './pages/Settings';
 import About from './pages/About';
 import RoofAnalysis from './pages/RoofAnalysis';
+import Community from './pages/Community';
 export function App() {
   return (
     <AuthProvider>
@@ -34,6 +35,7 @@ export function App() {
             <Route path="/map" element={<MapExplorer />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/knowledge" element={<KnowledgeHub />} />
+            <Route path="/community" element={<Community />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/about" element={<About />} />
             <Route path="/roof-analysis" element={<RoofAnalysis />} />
